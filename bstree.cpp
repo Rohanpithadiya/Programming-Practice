@@ -19,6 +19,7 @@ private:
 	int size_t;
 	void rec_insert(node*,node*);
 	node * create_node(int);
+	node * delete_node(node*,int);
 
 public:
 	BSTree();
@@ -73,8 +74,53 @@ void BSTree::push(int value){
 
 	this->rec_insert(root,intrim_node);
 }
+node * inoder_successor(node * root)
+{
+	node *trav = root;
+	while (trav->left != NULL){
+		trav = trav->left;
+	}
+	return trav;
+}
+node* BSTree::delete_node(node* head,int value){
+	if (!head){
+		return head;
+	}
+	if (head->value > value){
+		head->left = delete_node(head->left,value);
+	}
+	else if(head->value < value){
+		head->right = delete_node(head->right,value);
+	}
+	else{
+		if (head->left == NULL){
+			node *temp = head->right;
+			delete(head);
+			size_t --;
+			return head->right;
+		}
+		else if(head->right == NULL){
+			node *temp = head->left;
+			delete(head);
+			size_t --;
+			return head->left;	
+		}
+		else{
+				node * ino_succ = inoder_successor(head->right);
+				head->value = ino_succ->value;
+				head->right = delete_node(head->right,ino_succ->value);	
+		}
+	}
+	return head;
+}
 
-void BSTree::pop(int value){}
+void BSTree::pop(int value){
+	if (!root){
+		cout << "element not found" << endl;
+		return;
+	}
+	root = delete_node(root,value);
+}
 
 void BSTree::find(int value){
 	node *trav = root;
@@ -140,8 +186,7 @@ int main()
 	myBSTree.find(2);
 	myBSTree.find(7);
 
-	myBSTree.pop(3);
-	myBSTree.pop(3);
+	myBSTree.pop(5);
 	cout << myBSTree.size() << endl;
 	myBSTree.print();
 
