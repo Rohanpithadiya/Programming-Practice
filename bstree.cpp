@@ -11,6 +11,10 @@ struct Node{
 	struct Node *right;
 };
 
+enum Trav_Type{
+	pre,in,post
+}trav_type;
+
 typedef struct Node node;
 
 class BSTree{
@@ -28,11 +32,53 @@ public:
 	void find(int);
 	int size();
 	void print();
+	void travarsal(int);
 
 };
 BSTree::BSTree(){
 	root = NULL;
 	size_t = 0;
+}
+
+void preoder_trav(node *root){
+	if(!root)
+		return;
+	cout << root->value << ", ";
+	preoder_trav(root->left);
+	preoder_trav(root->right);
+}
+
+void inorder_trav(node *root){
+	if (!root)
+		return;
+	inorder_trav(root->left);
+	cout << root->value << ", ";
+	inorder_trav(root->right);
+}
+void postorder_trav(node * root){
+	if(!root)
+		return;
+	postorder_trav(root->left);
+	postorder_trav(root->right);
+	cout << root->value << ", ";
+}
+
+void BSTree::travarsal(int choice){
+	switch(choice){
+		case pre:
+			preoder_trav(root);
+		break;
+		case in:
+			inorder_trav(root);
+		break;
+		case post:
+			postorder_trav(root);
+		break;
+		default:
+			cout << "not a valid choice, use <pre, in, post>";
+		
+	}
+	cout << endl;
 }
 
 node * BSTree::create_node(int value){
@@ -189,6 +235,12 @@ int main()
 	myBSTree.pop(5);
 	cout << myBSTree.size() << endl;
 	myBSTree.print();
+
+	cout << "travarsal starts" << endl;
+	myBSTree.travarsal(5);
+	myBSTree.travarsal(pre);
+	myBSTree.travarsal(in);
+	myBSTree.travarsal(post);
 
 	return 0;
 }
