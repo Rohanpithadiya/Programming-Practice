@@ -1,4 +1,7 @@
 #include<iostream>
+#include<queue>
+#include<string>
+#include<sstream>
 
 using namespace std;
 
@@ -62,7 +65,6 @@ void BSTree::rec_insert(node *root, node *intrim_node){
 
 void BSTree::push(int value){
 	node * intrim_node = this->create_node(value);
-	cout << "done creating" << endl;
 	size_t ++;
 	if(!root){
 		root = intrim_node;
@@ -74,10 +76,48 @@ void BSTree::push(int value){
 
 void BSTree::pop(int value){}
 
-void BSTree::find(int value){}
+void BSTree::find(int value){
+	node *trav = root;
+	string path_str = "path: ";
+	while(trav){
+		ostringstream temp_str;
+		temp_str << trav->value;
+		path_str += temp_str.str() + "->";
+		if (trav->value == value){
+			cout << "found element " << value << endl << path_str << endl;
+			return;
+		}
+		else if (trav->value > value){
+			trav = trav->left;
+		}
+		else{
+			trav = trav->right;
+		}
+	}
+	cout << "Not able to find element " << value << endl;
+}
 
 void BSTree::print(){
+	if(!root){
+		cout << "Tree is empty !" << endl;
+		return;
+	}
+	
+	node *trav = root;
+	queue<node *> loQueue;
 
+	loQueue.push(root);
+	while(!loQueue.empty()){
+		node *temp_node = loQueue.front();
+		if(temp_node->left)
+			loQueue.push(temp_node->left);
+		if(temp_node->right)
+			loQueue.push(temp_node->right);
+
+		cout << temp_node->value << ", ";
+		loQueue.pop();
+	}	
+	cout << endl;
 }
 
 int BSTree::size(){return size_t;}
@@ -86,16 +126,19 @@ int main()
 {
 	BSTree myBSTree;
 
+	myBSTree.push(5);
 	myBSTree.push(3);
-	myBSTree.push(2);
 	myBSTree.push(1);
 	myBSTree.push(4);
+	myBSTree.push(8);
 	myBSTree.push(6);
+	myBSTree.push(9);
+	myBSTree.push(2);
 	cout << myBSTree.size() << endl;
 	myBSTree.print();
 
-	myBSTree.find(5);
-	myBSTree.find(6);
+	myBSTree.find(2);
+	myBSTree.find(7);
 
 	myBSTree.pop(3);
 	myBSTree.pop(3);
