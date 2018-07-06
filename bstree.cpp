@@ -11,10 +11,6 @@ struct Node{
 	struct Node *right;
 };
 
-enum Trav_Type{
-	pre,in,post
-}trav_type;
-
 typedef struct Node node;
 
 class BSTree{
@@ -35,6 +31,12 @@ public:
 	void travarsal(int);
 
 };
+
+enum Trav_Type{
+	pre,in,post
+}trav_type;
+
+
 BSTree::BSTree(){
 	root = NULL;
 	size_t = 0;
@@ -188,6 +190,7 @@ void BSTree::find(int value){
 	}
 	cout << "Not able to find element " << value << endl;
 }
+
 
 void BSTree::print(){
 	if(!root){
